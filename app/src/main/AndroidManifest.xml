@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.example.countdownapp">
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <application
+        android:allowBackup="true"
+        android:label="CountdownApp"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.CountdownApp">
+        <activity android:name=".WidgetConfigActivity" android:exported="true"/>
+        <activity android:name=".AddEditActivity" android:exported="true"/>
+        <activity android:name=".MainActivity" android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <receiver android:name=".CountdownWidget" android:exported="true">
+            <intent-filter><action android:name="android.appwidget.action.APPWIDGET_UPDATE"/></intent-filter>
+            <meta-data android:name="android.appwidget.provider" android:resource="@xml/countdown_widget_info"/>
+        </receiver>
+        <receiver android:name=".MidnightAlarmReceiver" android:exported="true"/>
+    </application>
+</manifest>
