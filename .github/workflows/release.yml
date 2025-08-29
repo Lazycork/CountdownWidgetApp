@@ -1,0 +1,40 @@
+name: Android Release (build via Gradle Action)
+
+on:
+  workflow_dispatch:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up JDK
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: Set up Gradle
+        uses: gradle/gradle-build-action@v2
+
+      - name: Build release APK
+        run: gradle assembleRelease --no-daemon
+
+      - name: Upload Release APK (artifact)
+        uses: actions/upload-artifact@v4
+        with:
+          name: CountdownWidgetApp-Release
+          path: app/build/outputs/apk/release/app-release.apk
+
+      - name: Create GitHub Release (attach APK)
+        uses: softprops/action-gh-release@v2
+        with:
+          files: app/build/outputs/apk/release/app-release.apk
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
